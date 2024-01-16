@@ -1,4 +1,4 @@
-import { User } from "../models/user.model.js"
+import { User } from "../schema/user.schema.js"
 
 export const find = async function ()
 {

@@ -1,7 +1,8 @@
 import express from 'express'
 import { createServer} from 'http'
-import { authRouter } from '../routes/auth.route.js';
 import errorMiddleware from '../app/middleware/error.middleware.js';
+import { authRouter } from '../routes/auth.route.js';
+import { postRouter } from '../routes/post.route.js';
 
 // defined the express app
 const app = express(); 
@@ -12,7 +13,8 @@ app.use( express.json() )
 app.use( express.urlencoded( { extended: true } ) )
 
 // define route middleware
-app.use("/api/v1/auth", authRouter)
+app.use( "/api/v1/auth", authRouter );
+app.use( '/api/v1/posts', postRouter );
 
 
 // global error handler

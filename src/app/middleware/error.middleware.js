@@ -1,4 +1,7 @@
 import { ApplicationException, BadRequestException, NotFoundException, UnauthenticatedException, UnauthorizedException, ValidationException } from "../../lib/utils/errors.utils.js";
+import appConfig from '../../lib/config/app.config.js';
+
+const { server } = appConfig;
 
 const errorMiddleware = ( err, req, res, next ) =>
 {
@@ -18,20 +21,15 @@ const errorMiddleware = ( err, req, res, next ) =>
       return res.status(err.statuscode).json({
         success: false,
         message: err.message,
+        stack: server.environment === "development" && err.stack,
       });
     } else {
       return res.status(500).json({
         success: false,
         message: err.message,
-        stack: (process.env.NODE_ENV === development) && err.stack
+        stack: (server.environment === 'development') && err.stack
       });
     }
 }
-
-/* 
-process = object - properties and methods
-env = object we can add variables or properties to it
-
-*/
 
 export default errorMiddleware;

@@ -1,10 +1,9 @@
 import { server } from "./boostrap/server.js";
 import chalk from "chalk";
 import { connectToDatabase } from "./lib/config/db.config.js";
-import { config } from "dotenv";
-config();
+import appConfig from "./lib/config/app.config.js";
 
-const port = Number(process.env.PORT);
+const { port } = appConfig.server; 
 
 const bootstrap = async function () {
   try {

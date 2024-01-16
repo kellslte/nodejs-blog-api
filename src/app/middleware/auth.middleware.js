@@ -1,24 +1,31 @@
-import jwt from 'jsonwebtoken'
-import { config} from 'dotenv'
-config();
+import jwtService from "jsonwebtoken";
+import appConfig from "../../lib/config/app.config.js";
+import { UnauthenticatedException } from "../../lib/utils/errors.utils.js";
 
-const authMiddleware = function (req, res)
-{
-    try
-    { 
-        const authorization = req.headers['authorization'];
+const { jwt } = appConfig.provider;
 
-        const [ type, token ] = authorization.split( ' ' );
+const authMiddleware = function (req, res, next) {
+  try {
+    const authorization = req.headers[ "authorization" ];
+    
+    if(!authorization) throw new UnauthenticatedException(
+      "Invalid token or token missing from request"
+    );
 
-        if(!token || !type) throw new UnathorizedException('Invalid token or token missing from request');
+    const [type, token] = authorization.split(" ");
 
-        const user = jwt.verify(token, process.env.JWT_SECRET);
+    if (!token && !type)
+      throw new UnathorizedException(
+        "Invalid token or token missing from request"
+      );
 
-        req.user = user;
-        next();
-    }
-    catch ( e )
-    {
-        next( e );
-    }
-}
+    const user = jwtService.verify(token, jwt.secret);
+
+    req.user = user;
+    next();
+  } catch (e) {
+    next(e);
+  }
+};
+
+export default authMiddleware;

@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
 import chalk from "chalk";
-import { config } from "dotenv";
-config();
+import appConfig from "./app.config.js";
 
 export const connectToDatabase = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(appConfig.provider.mongodburl);
 
     mongoose.connection.on("open", () => {
       console.info(

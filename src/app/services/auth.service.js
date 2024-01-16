@@ -1,9 +1,10 @@
 import * as userService from './user.service.js'
 import { BadRequestException, NotFoundException } from '../../lib/utils/errors.utils.js'
-import jwt from 'jsonwebtoken'
+import jwtService from 'jsonwebtoken'
 import argon from 'argon2'
-import { config } from 'dotenv'
-config()
+import appConfig from '../../lib/config/app.config.js';
+
+const { jwt } = appConfig.provider;
 
 export const createNewUser = async function ( payload )
 {
@@ -31,14 +32,17 @@ export const login = async function ( payload )
     if ( !user ) throw new NotFoundException( 'A user with the provided email does not exist' );
 
     // confirm that the password passed is the same as the on on file
-    if(!(await argon.verify(user.password, payload.password))) throw new BadRequest(' Invalid user credentials, please check the email or password and ry again')
+    if(!(await argon.verify(user.password, payload.password))) throw new BadRequest(' Invalid user credentials, please check the email or password and try again')
 
     // generate a token to serve as a gatepass for the user
-    return jwt.sign( {
+    return jwtService.sign( {
         sub: user.id,
-        nmae: user.name,
-        email: user.email
-    }, process.env.JWT_SECRET);
+        name: user.name,
+        email: user.email,
+        role: 'author'
+    }, jwt.secret, {
+        expiresIn: jwt.expiresIn
+    });
 }
 
 export const forgotPassword = async function(email){}
