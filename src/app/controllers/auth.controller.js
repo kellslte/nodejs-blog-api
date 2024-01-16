@@ -19,6 +19,15 @@ export const login = asyncWrapper( async ( req, res ) =>
 export const register = asyncWrapper( async ( req, res ) =>
 {
     // handle creation of new accounts
+    const user = await authService.createNewUser( req.body );
+
+    return res.status( 201 ).json( {
+        success: true,
+        message: 'User account created successfully',
+        data: {
+            user: user
+        }
+    })
 } )
 
 export const forgotPassword = asyncWrapper( async ( req, res ) => { } );

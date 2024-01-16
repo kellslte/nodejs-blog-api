@@ -15,6 +15,10 @@ export const findById = async function ( id )
     return await User.findById( id );
 }
 
+export const create = async function (payload) {
+    return await User.create( payload );
+}
+
 export const updateUser = async function ( id, payload ) { }
 
 export const deletUser = async function(id){}

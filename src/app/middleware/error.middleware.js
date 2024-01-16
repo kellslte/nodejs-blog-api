@@ -23,8 +23,15 @@ const errorMiddleware = ( err, req, res, next ) =>
       return res.status(500).json({
         success: false,
         message: err.message,
+        stack: (process.env.NODE_ENV === development) && err.stack
       });
     }
 }
+
+/* 
+process = object - properties and methods
+env = object we can add variables or properties to it
+
+*/
 
 export default errorMiddleware;

@@ -3,7 +3,7 @@ import { createServer} from 'http'
 import { authRouter } from '../routes/auth.route.js';
 import errorMiddleware from '../app/middleware/error.middleware.js';
 
-// defined the epxress app
+// defined the express app
 const app = express(); 
 const server = createServer( app );
 
