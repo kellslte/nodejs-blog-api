@@ -36,11 +36,12 @@ export class BadRequestException extends Error {
 
 export class ValidationException extends Error
 {
-  constructor( message )
+  constructor(errors, message )
   {
     super( message );
     
     this.statuscode = 422;
+    this.errors = errors;
   }
 }
 

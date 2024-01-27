@@ -9,50 +9,71 @@ comments
 */
 
 import { Schema, Types, model } from "mongoose";
-import { Comment } from "./comment.schema.js";
+import { Comment, CommentSchema } from "./comment.schema.js";
 import { User } from "./user.schema.js";
-import { generateExcerpt } from "../../lib/utils/helpers.js";
+import { generateExcerpt, slugify } from "../../lib/utils/helpers.js";
 
-const PostSchema = new Schema( {
+const PostSchema = new Schema(
+  {
     title: {
-        type: String,
+      type: String,
+      required: true,
     },
 
     body: {
-        type: String,
+      type: String,
+      required: true,
     },
 
     excerpt: {
-        type: String
+      type: String,
     },
 
     featuredImage: {
-        type: String,
+      type: String,
+      default: "",
     },
 
     slug: {
-        type: String,
-        default: ''
+      type: String,
     },
 
     tags: {
-        type: String,
+      type: [ String ],
+      default: []
+      //required: true,
     },
 
     isPublished: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
     },
 
-    comments: {
-        type: [ Types.ObjectId ],
-        ref: [Comment]
-    },
+    comments: [
+      {
+        types: Types.ObjectId,
+        ref: CommentSchema
+      }
+    ],
 
     author: {
-        type: Types.ObjectId,
-        ref: User
-    }
-}, { timestamps: true} );
+      type: Types.ObjectId,
+      ref: User,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+// set up the middleware
+PostSchema.pre( 'save', function ( next, options )
+{
+    // create the slug
+    this.slug = slugify( this.title );
+    // create the excerpt 
+  this.excerpt = generateExcerpt( this.body );
+  
+  next();
+} );
 
 export const Post = model( 'Post', PostSchema );

@@ -1,19 +1,13 @@
-import { Schema, Types, model } from "mongoose";
-import { Post } from "./post.schema.js";
+import { Schema, model } from "mongoose";
 
 
-const CommentSchema = new Schema( {
+export const CommentSchema = new Schema( {
     username: {
         type: 'string'
     },
 
     email: {
         type: 'string'
-    },
-
-    post: {
-        type: Types.ObjectId,
-        ref: Post
     },
 
     message: {

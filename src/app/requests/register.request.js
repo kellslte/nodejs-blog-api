@@ -1,11 +1,11 @@
-import joi from 'joi'
+import Joi from 'joi'
 
-export const RegisterRequest = joi.object({
-    name: joi.string().alphanum().required(),
-    email: joi.string().email( {
+export const RegisterRequest = Joi.object({
+    name: Joi.string().alphanum().required(),
+    email: Joi.string().email( {
     minDomainSegments: 2,
     tlds: { allow: ["com", "net"] },
   }),
-    password: joi.string().pattern( new RegExp( "^[a-zA-Z0-9]{3,30}$" ) ),
-    confirmPassword: joi.ref( 'password' )
+    password: Joi.string().pattern( new RegExp( "^[a-zA-Z0-9]{3,30}$" ) ),
+    confirmPassword: Joi.ref( 'password' )
 });

@@ -4,24 +4,34 @@ import { UnauthenticatedException } from "../../lib/utils/errors.utils.js";
 
 const { jwt } = appConfig.provider;
 
+const allowedRoutes = ["/"];
+
 const authMiddleware = function (req, res, next) {
-  try {
-    const authorization = req.headers[ "authorization" ];
-    
-    if(!authorization) throw new UnauthenticatedException(
-      "Invalid token or token missing from request"
-    );
+  try
+  {
+    // if ((allowedRoutes.includes(req.url) && ) &&
+    //     (req.headers["authorization"] &&
+    //     req.method === "GET")
+    // ) {
+    //   const authorization = req.headers["authorization"];
 
-    const [type, token] = authorization.split(" ");
+    //   if (!authorization)
+    //     throw new UnauthenticatedException(
+    //       "Invalid token or token missing from request"
+    //     );
 
-    if (!token && !type)
-      throw new UnathorizedException(
-        "Invalid token or token missing from request"
-      );
+    //   const [type, token] = authorization.split(" ");
 
-    const user = jwtService.verify(token, jwt.secret);
+    //   if (!token && !type)
+    //     throw new UnathorizedException(
+    //       "Invalid token or token missing from request"
+    //     );
 
-    req.user = user;
+    //   const user = jwtService.verify(token, jwt.secret);
+
+    //   req.user = user;
+    // }
+
     next();
   } catch (e) {
     next(e);

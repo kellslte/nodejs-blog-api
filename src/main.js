@@ -1,4 +1,4 @@
-import { server } from "./boostrap/server.js";
+import { server } from "./bootstrap/server.js";
 import chalk from "chalk";
 import { connectToDatabase } from "./lib/config/db.config.js";
 import appConfig from "./lib/config/app.config.js";
