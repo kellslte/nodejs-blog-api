@@ -3,12 +3,12 @@ import chalk from "chalk";
 import { connectToDatabase } from "./lib/config/db.config.js";
 import appConfig from "./lib/config/app.config.js";
 
-const { port } = appConfig.server; 
+const { port } = appConfig.server;
 
-const bootstrap = async function () {
+(async function () {
   try {
     // connect to the database
-    await connectToDatabase()
+    await connectToDatabase();
 
     // start the application
     server.listen(port, () => {
@@ -16,10 +16,8 @@ const bootstrap = async function () {
         chalk.yellowBright(`🚀 Application is live and running on port ${port}`)
       );
     });
-  } catch ( e )
-  {
-      process.exit(1)
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
   }
-};
-
-bootstrap();
+})();
